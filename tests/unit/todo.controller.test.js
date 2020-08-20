@@ -66,6 +66,13 @@ describe.only('TodoController.updateTodo', () => {
     await TodoController.updateTodo(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
+
+  it('should return status code 404 when the todo is not found', async () => {
+    TodoModel.findByIdAndUpdate.mockReturnValue(null);
+    await TodoController.updateTodo(req, res, next);
+    expect(res._isEndCalled()).toBeTruthy();
+    expect(res.statusCode).toBe(404);
+  });
 });
 
 describe('TodoController.getTodoById', () => {

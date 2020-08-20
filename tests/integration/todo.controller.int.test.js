@@ -4,7 +4,7 @@ const newTodo = require('../mock-data/new-todo.json');
 const todo = require('../mock-data/todo.json');
 
 const endpointUrl = '/todos/';
-let firstTodo;
+let firstTodo, newTodoId;
 
 describe(endpointUrl, () => {
   it('POST ' + endpointUrl, async () => {
@@ -12,6 +12,7 @@ describe(endpointUrl, () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.title).toBe(newTodo.title);
     expect(response.body.done).toBe(newTodo.done);
+    newTodoId = response.body._id;
   });
 
   it('GET ' + endpointUrl, async () => {
@@ -35,6 +36,15 @@ describe(endpointUrl, () => {
       endpointUrl + '5f13695a7dc86f2607c20d8f'
     );
     expect(response.statusCode).toBe(404);
+  });
+
+  it('PUT ' + endpointUrl + ':todoId', async () => {
+    const response = await request(app)
+      .put(`${endpointUrl}${newTodoId}`)
+      .send(todo);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.title).toBe(todo.title);
+    expect(response.body.done).toBe(todo.done);
   });
 
   it(

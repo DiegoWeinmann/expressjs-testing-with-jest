@@ -42,6 +42,11 @@ exports.updateTodo = async (req, res, next) => {
         useFindAndModify: false,
       }
     );
+
+    if (!updatedTodo) {
+      return res.status(404).json(null);
+    }
+
     return res.status(200).json(updatedTodo);
   } catch (err) {
     next(err);
