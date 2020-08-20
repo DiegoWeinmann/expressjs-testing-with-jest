@@ -19,6 +19,8 @@ beforeEach(() => {
 
 afterAll(() => {
   TodoModel.create.mockRestore();
+  TodoModel.find.mockRestore();
+  TodoModel.findById.mockRestore();
 });
 
 describe('TodoController.getTodoById', () => {
@@ -44,7 +46,7 @@ describe('TodoController.getTodoById', () => {
   });
 });
 
-describe.skip('TodoController.getTodos', () => {
+describe('TodoController.getTodos', () => {
   it('should have a getTodos function', () => {
     expect(typeof TodoController.getTodos).toBe('function');
   });
@@ -73,7 +75,7 @@ describe.skip('TodoController.getTodos', () => {
   });
 });
 
-describe.skip('TodoController.createTodo', () => {
+describe('TodoController.createTodo', () => {
   beforeEach(() => {
     req.body = newTodo;
   });
