@@ -23,11 +23,18 @@ describe(endpointUrl, () => {
     firstTodo = response.body[0];
   });
 
-  it('GET ' + endpointUrl + ':todoId', async () => {
+  it('GET by id ' + endpointUrl + ':todoId', async () => {
     const response = await request(app).get(`${endpointUrl}${firstTodo._id}`);
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe(firstTodo.title);
     expect(response.body.done).toBe(firstTodo.done);
+  });
+
+  it('GET by id ' + endpointUrl + ':todoId not found.', async () => {
+    const response = await request(app).get(
+      endpointUrl + '5f13695a7dc86f2607c20d8f'
+    );
+    expect(response.statusCode).toBe(404);
   });
 
   it(
