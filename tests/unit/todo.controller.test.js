@@ -3,9 +3,11 @@ const TodoModel = require('../../models/todo.model');
 const httpMocks = require('node-mocks-http');
 const newTodo = require('../mock-data/new-todo.json');
 const allTodos = require('../mock-data/todos.json');
+const todo = require('../mock-data/todo.json');
 
 TodoModel.create = jest.fn();
 TodoModel.find = jest.fn();
+TodoModel.findById = jest.fn();
 
 let req, res, next;
 
@@ -19,8 +21,31 @@ afterAll(() => {
   TodoModel.create.mockRestore();
 });
 
-describe('TodoController.getTodos', () => {
-  it('should have a getTodos function.', () => {
+describe('TodoController.getTodoById', () => {
+  beforeEach(() => {
+    req.params.todoId = '5f3dbaa3c692132b0ed5b237';
+  });
+
+  it('should have a getTodoById function', () => {
+    expect(typeof TodoController.getTodoById).toBe('function');
+  });
+
+  it('should call TodoModel.findById with route param id', async () => {
+    await TodoController.getTodoById(req, res, next);
+    expect(TodoModel.findById).toHaveBeenCalledWith(req.params.todoId);
+  });
+
+  it('should return json body and response code 200', async () => {
+    TodoModel.findById.mockReturnValue(todo);
+    await TodoController.getTodoById(req, res, next);
+    expect(res.statusCode).toBe(200);
+    expect(res._isEndCalled()).toBeTruthy();
+    expect(res._getJSONData()).toStrictEqual(todo);
+  });
+});
+
+describe.skip('TodoController.getTodos', () => {
+  it('should have a getTodos function', () => {
     expect(typeof TodoController.getTodos).toBe('function');
   });
 
@@ -48,7 +73,7 @@ describe('TodoController.getTodos', () => {
   });
 });
 
-describe('TodoController.createTodo', () => {
+describe.skip('TodoController.createTodo', () => {
   beforeEach(() => {
     req.body = newTodo;
   });
