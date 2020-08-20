@@ -56,6 +56,16 @@ describe.only('TodoController.updateTodo', () => {
     expect(res._isEndCalled()).toBeTruthy();
     expect(res._getJSONData()).toStrictEqual(newTodo);
   });
+
+  it('should handle error.', async () => {
+    const errorMessage = {
+      message: 'error updating todo.',
+    };
+    const rejectedPromise = Promise.reject(errorMessage);
+    TodoModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+    await TodoController.updateTodo(req, res, next);
+    expect(next).toHaveBeenCalledWith(errorMessage);
+  });
 });
 
 describe('TodoController.getTodoById', () => {
