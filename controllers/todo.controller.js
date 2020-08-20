@@ -21,10 +21,8 @@ exports.getTodos = async (req, res, next) => {
 exports.getTodoById = async (req, res, next) => {
   try {
     const todo = await TodoModel.findById(req.params.todoId);
-    console.log(todo);
 
     if (!todo) {
-      console.log(!todo);
       return res.status(404).json(null);
     }
 
