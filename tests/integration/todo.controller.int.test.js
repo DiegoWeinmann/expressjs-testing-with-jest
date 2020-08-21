@@ -38,6 +38,22 @@ describe(endpointUrl, () => {
     expect(response.statusCode).toBe(404);
   });
 
+  it('DELETE ' + endpointUrl + ':todoId', async () => {
+    const response = await request(app).delete(
+      `${endpointUrl}${firstTodo._id}`
+    );
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBe(null);
+  });
+
+  it('DELETE ' + endpointUrl + ':todoId not found.', async () => {
+    const response = await request(app).delete(
+      endpointUrl + '5f13695a7dc86f2607c20d8f'
+    );
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toBe(null);
+  });
+
   it('PUT ' + endpointUrl + ':todoId', async () => {
     const response = await request(app)
       .put(`${endpointUrl}${newTodoId}`)
